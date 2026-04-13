@@ -70,7 +70,9 @@ namespace P1
         
         private void BtEmpregados_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Tela de empregados ainda não implementada.");
+            CadEmpregados frmEmpregados = new CadEmpregados();
+            frmEmpregados.Show();
+            this.Hide();
         }
     }
 }
