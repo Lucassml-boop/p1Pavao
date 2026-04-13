@@ -32,8 +32,8 @@ namespace P1
                 adapter.Fill(tblsetores);
 
                 cboCodSetor.DataSource = tblsetores;
-                cboCodSetor.DisplayMember = "setor";
-                cboCodSetor.ValueMember = "codsetor";
+                cboCodSetor.DisplayMember = "NomeSetor";
+                cboCodSetor.ValueMember = "CodSetor";
                 if(cboCodSetor.SelectedValue != null)
                 {
                     lblcodsetor.Text = cboCodSetor.SelectedValue.ToString();
@@ -59,17 +59,44 @@ namespace P1
 
         private void Btgravar_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtEmpregado.Text) ||
+                string.IsNullOrWhiteSpace(txtEndereco.Text) ||
+                string.IsNullOrWhiteSpace(txtBairro.Text) ||
+                string.IsNullOrWhiteSpace(txtCidade.Text) ||
+                string.IsNullOrWhiteSpace(txtCargo.Text) ||
+                string.IsNullOrWhiteSpace(txtSalario.Text))
+            {
+                MessageBox.Show("Preencha todos os campos obrigatórios.", "Mensagem",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            decimal salario;
+            if (!decimal.TryParse(txtSalario.Text, out salario))
+            {
+                MessageBox.Show("Salário inválido. Informe um valor numérico.", "Mensagem",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSalario.Focus();
+                return;
+            }
+
             try
             {
                 strconex = "data source=(local);initial catalog=empresa;integrated security=sspi";
                 conexao = new SqlConnection(strconex);
                 conexao.Open();
 
-                strsql = "insert into empregados (codempregado, empregado, bairro, cidade, codsetor) " +
-                         "values ('" + txtCodEmpregado.Text + "','" + txtEmpregado.Text + "','" + 
-                         txtBairro.Text + "','" + txtCidade.Text + "','" + cboCodSetor.SelectedValue + "')";
+                strsql = "INSERT INTO Empregados (Nome, Endereco, Bairro, Cidade, Cargo, Salario, CodSetor) " +
+                         "VALUES (@nome, @endereco, @bairro, @cidade, @cargo, @salario, @codsetor)";
 
                 comando = new SqlCommand(strsql, conexao);
+                comando.Parameters.AddWithValue("@nome", txtEmpregado.Text);
+                comando.Parameters.AddWithValue("@endereco", txtEndereco.Text);
+                comando.Parameters.AddWithValue("@bairro", txtBairro.Text);
+                comando.Parameters.AddWithValue("@cidade", txtCidade.Text);
+                comando.Parameters.AddWithValue("@cargo", txtCargo.Text);
+                comando.Parameters.AddWithValue("@salario", salario);
+                comando.Parameters.AddWithValue("@codsetor", cboCodSetor.SelectedValue);
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Registro gravado com sucesso.", "Mensagem",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);

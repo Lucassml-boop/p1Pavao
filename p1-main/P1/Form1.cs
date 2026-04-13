@@ -32,17 +32,27 @@ namespace P1
                 return;
             }
 
+            int codSetor;
+            if (!int.TryParse(txtCodSetor.Text, out codSetor))
+            {
+                MessageBox.Show("Código do setor inválido. Informe um valor numérico.");
+                txtCodSetor.Focus();
+                return;
+            }
+
             SqlConnection conn = new SqlConnection(conexao);
 
             try
             {
                 conn.Open();
 
-                string sql = "INSERT INTO setores (codsetor, setor, descricao_setor) VALUES (@cod, @setor, @descricao)";
+                string sql = "SET IDENTITY_INSERT Setores ON; " +
+                             "INSERT INTO Setores (CodSetor, NomeSetor, Descricao) VALUES (@cod, @setor, @descricao); " +
+                             "SET IDENTITY_INSERT Setores OFF;";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@cod", int.Parse(txtCodSetor.Text));
+                cmd.Parameters.AddWithValue("@cod", codSetor);
                 cmd.Parameters.AddWithValue("@setor", txtSetor.Text);
                 cmd.Parameters.AddWithValue("@descricao", txtDescricao.Text);
 
@@ -50,7 +60,6 @@ namespace P1
 
                 MessageBox.Show("Setor cadastrado com sucesso!");
 
-                
                 txtCodSetor.Clear();
                 txtSetor.Clear();
                 txtDescricao.Clear();
