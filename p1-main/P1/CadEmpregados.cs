@@ -20,7 +20,7 @@ namespace P1
 
         private void CadEmpregados_Load(object sender, EventArgs e)
         {
-            strconex = "data source=(local);initial catalog=empresa;integrated security=sspi";
+            strconex = "Data Source=localhost;Initial Catalog=Empresa;Integrated Security=True";
             conexao = new SqlConnection(strconex);
             
             try
@@ -82,7 +82,7 @@ namespace P1
 
             try
             {
-                strconex = "data source=(local);initial catalog=empresa;integrated security=sspi";
+                strconex = "Data Source=localhost;Initial Catalog=Empresa;Integrated Security=True";
                 conexao = new SqlConnection(strconex);
                 conexao.Open();
 

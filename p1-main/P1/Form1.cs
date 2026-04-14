@@ -3,16 +3,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Windows.Forms;
-
 namespace P1
 {
     public partial class Form1 : Form
     {
-        string conexao = "Data Source=localhost;Initial Catalog=empresa;Integrated Security=True";
+        private readonly string conexao = "Data Source=localhost;Initial Catalog=Empresa;Integrated Security=True";
 
         public Form1()
         {
